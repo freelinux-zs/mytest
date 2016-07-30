@@ -1,0 +1,9 @@
+1.本目录作为平时测试学习的文件目录。
+
+V01:
+	驱动部分:
+		1.实现字符设备。
+		2.DEVICE_ATTR的使用
+		3.Makefile简单实现
+	测试代码:
+		1.open,read,write,ioctl实现
