@@ -28,9 +28,6 @@
 #define MEMDEV_SIZE 4096
 #endif
 
-/*start*/
-/*patch test*/
-/*end*/
 
 /*mem设备描述结构体*/
 struct mem_dev{
