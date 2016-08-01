@@ -1,5 +1,5 @@
-#obj-m := hello.o
-obj-m := hrtimer.o
+obj-m := hello.o
+#obj-m := hrtimer.o
 
 KERNEL_DIR := /lib/modules/$(shell uname -r)/build
 PWD := $(shell pwd)
