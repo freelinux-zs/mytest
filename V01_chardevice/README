@@ -5,4 +5,5 @@
 	+static DEVICE_ATTR(reg, S_IRUGO | S_IWUSR,mem_get_reg,  mem_set_reg);
 	+static DEVICE_ATTR(debug, S_IRUGO | S_IWUSR,NULL,  mem_set_debug);
 
-
+2.错误信息：error: implicit declaration of function ‘do_posix_clock_monotonic_gettime’
+	暂时没找到解决办法，获取开启定时器的时间。通过log查看printk的时间点。
