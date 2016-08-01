@@ -289,7 +289,7 @@ static int __init memdev_init(void)
 	fail_malloc:
 	unregister_chrdev_region(MKDEV(mem_major, 0), 2); /*释放设备号*/
 	device_destroy(cdev_class, devno);
-    class_destroy(cdev_class);
+   	class_destroy(cdev_class);
    
 	return result;
 }
@@ -303,7 +303,8 @@ static void __exit memdev_exit(void)
 	kfree(mem_devp);     /*释放设备结构体内存*/
 	unregister_chrdev_region(MKDEV(mem_major, 0), 2); /*释放设备号*/
 	device_destroy(cdev_class, devno);
-    class_destroy(cdev_class);
+   	class_destroy(cdev_class);
+	hrtimer_cancel(&timer);
 }
 
 MODULE_AUTHOR("David Xie");
