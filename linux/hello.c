@@ -141,7 +141,7 @@ static ssize_t mem_write(struct file *filp, const char __user *buf, size_t size,
 		return -EINVAL;
 		
  	printk("mem_write a = %d,\n",a);
- 	 return 0;
+	return 0;
 }
 
  
@@ -149,8 +149,8 @@ static ssize_t mem_write(struct file *filp, const char __user *buf, size_t size,
 /* seek文件定位函数 */
 static loff_t mem_llseek(struct file *filp, loff_t offset, int whence)
 {
-		printk("mem_llseek\n");
-		return 0;
+	printk("mem_llseek\n");
+	return 0;
 }
 
 
@@ -236,16 +236,16 @@ static int __init memdev_init(void)
 	cdev_add(&cdev, MKDEV(mem_major, 0), MEMDEV_NR_DEVS);//MEMDEV_NR_DEVS:多少个设备
 	
 	cdev_class = class_create(THIS_MODULE, "cdevclass");
-    if (IS_ERR(cdev_class)) {
-        printk("Unable to create class, err = %d\n", (int)PTR_ERR(cdev_class));
-        goto fail_malloc;
-    }
+	if (IS_ERR(cdev_class)) {
+        	printk("Unable to create class, err = %d\n", (int)PTR_ERR(cdev_class));
+        	goto fail_malloc;
+   	}
 
-   cdev_device = device_create(cdev_class, NULL, devno, NULL, "memdev");
-    if(NULL ==cdev_device){
-        printk("device_create fail\n");
-        goto fail_malloc;
-    }
+   	cdev_device = device_create(cdev_class, NULL, devno, NULL, "memdev");
+    	if(NULL ==cdev_device){
+        	printk("device_create fail\n");
+       	 	goto fail_malloc;
+    	}
    
 	
 	/* 为设备描述结构分配内存（因为我们用内存模拟设备，操作设备就要操作这段内存）*/
