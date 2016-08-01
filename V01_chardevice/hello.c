@@ -15,6 +15,11 @@
 #include <linux/platform_device.h>
 #include <linux/of_address.h>
 #include <linux/sysfs.h> 
+#include <linux/hrtimer.h>  
+#include <linux/ktime.h>
+#include <linux/dma-mapping.h> //DO-->hrtimer包含以下三个头文件 /* DMA APIs             */   
+#include <linux/time.h>           /* struct timespec    */
+
 
 #ifndef MEMDEV_MAJOR
 #define MEMDEV_MAJOR 0 /*预设的mem的主设备号*/
@@ -42,7 +47,12 @@ struct cdev cdev;
 static struct class *cdev_class = NULL;
 static struct device *cdev_device = NULL;
 static dev_t devno;
- 
+/*timer*/
+struct hrtimer timer;
+static ktime_t ktime;  
+static unsigned int interval=5000; /* unit: us */  
+struct timespec uptimeLast;
+static struct work_struct mem_work;
 
 #define TEST_IOCTL_BASE 99
 #define TEST_IOCTL_0    _IO(TEST_IOCTL_BASE,0)
@@ -167,6 +177,20 @@ static long mem_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 	return 0;
 }
 
+static void mem_work_func(struct work_struct *work)
+{        
+	hrtimer_start(&timer,
+            ktime_set(2000 / 1000, (2000 % 1000) * 1000000),HRTIMER_MODE_REL);  //2S 超时 
+}
+
+/*time function*/
+static enum hrtimer_restart mem_timer_function(struct hrtimer *timer)
+{
+	printk("mem time funcution\n");
+	schedule_work(&mem_work); 
+	return HRTIMER_NORESTART;
+}
+
 
 /*文件操作结构体*/
 static const struct file_operations mem_fops ={
@@ -187,7 +211,6 @@ static int __init memdev_init(void)
 {
 	int result;
 	int i;
-	//int status;
 	
 	/*利用主设备号、此设备号构造--设备号*/
 	 devno = MKDEV(mem_major, 0);//mem_major在.h头文件中为254
@@ -250,7 +273,15 @@ static int __init memdev_init(void)
 	result = device_create_file(cdev_device, &dev_attr_debug);
 	if(result < 0 )
 		goto fail_create_file;
-	
+
+	hrtimer_init(&timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
+	ktime = ktime_set(interval/1000000, (interval%1000000)*1000);
+	timer.function = mem_timer_function;
+//	 hrtimer_start(&timer, ktime_set(1, 0), HRTIMER_MODE_REL);
+
+	 
+	hrtimer_start(&timer, ktime, HRTIMER_MODE_REL);
+	INIT_WORK(&mem_work, mem_work_func);
 	return 0;
 	fail_create_file:
 	cdev_del(&cdev);   /*注销设备*/
