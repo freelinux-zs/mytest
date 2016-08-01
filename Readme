@@ -5,5 +5,9 @@ V01:
 		1.实现字符设备。
 		2.DEVICE_ATTR的使用
 		3.Makefile简单实现
-	测试代码:
+	测试代码:	
 		1.open,read,write,ioctl实现
+
+
+V02:
+	增加高精度定时器
