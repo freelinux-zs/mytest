@@ -1,0 +1,8 @@
+1.错误信息：include/linux/bug.h:33:45: error: negative width in bit-field ‘<anonymous>’
+	-static DEVICE_ATTR(reg, S_IRUGO | S_IWUGO,mem_get_reg,  mem_set_reg);
+	-static DEVICE_ATTR(debug, S_IRUGO | S_IWUGO,NULL,  mem_set_debug);
+	-
+	+static DEVICE_ATTR(reg, S_IRUGO | S_IWUSR,mem_get_reg,  mem_set_reg);
+	+static DEVICE_ATTR(debug, S_IRUGO | S_IWUSR,NULL,  mem_set_debug);
+
+

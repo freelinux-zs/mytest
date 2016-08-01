@@ -13,8 +13,8 @@
 #include <linux/cdev.h>
 #include <linux/proc_fs.h>
 #include <linux/platform_device.h>
-
-
+#include <linux/of_address.h>
+#include <linux/sysfs.h> 
 
 #ifndef MEMDEV_MAJOR
 #define MEMDEV_MAJOR 0 /*预设的mem的主设备号*/
@@ -37,7 +37,6 @@ struct mem_dev{
 
 
 static int mem_major = MEMDEV_MAJOR;
-module_param(mem_major, int, S_IRUGO);
 struct mem_dev *mem_devp; /*设备结构体指针*/
 struct cdev cdev;
 static struct class *cdev_class = NULL;
@@ -54,9 +53,9 @@ static ssize_t mem_get_reg(struct device* cd,struct device_attribute *attr, char
 static ssize_t mem_set_reg(struct device* cd, struct device_attribute *attr,const char* buf, size_t len);
 static ssize_t mem_set_debug(struct device* cd, struct device_attribute *attr,const char* buf, size_t len);
 
-static DEVICE_ATTR(reg, S_IRUGO | S_IWUGO,mem_get_reg,  mem_set_reg);
-static DEVICE_ATTR(debug, S_IRUGO | S_IWUGO,NULL,  mem_set_debug);
-
+static DEVICE_ATTR(reg, S_IRUGO | S_IWUSR,mem_get_reg,  mem_set_reg);
+static DEVICE_ATTR(debug, S_IRUGO | S_IWUSR,NULL,  mem_set_debug);
+module_param(mem_major, int, S_IRUGO);
 
 static ssize_t mem_get_reg(struct device* cd,struct device_attribute *attr, char* buf){
 	unsigned char reg_val = 10;
@@ -243,7 +242,6 @@ static int __init memdev_init(void)
 		memset(mem_devp[i].data, 0, MEMDEV_SIZE);
 	}
 	
-
 	result = device_create_file(cdev_device, &dev_attr_reg);
 	if(result < 0 ){
 		printk("error...device_create_file\n");
@@ -252,7 +250,6 @@ static int __init memdev_init(void)
 	result = device_create_file(cdev_device, &dev_attr_debug);
 	if(result < 0 )
 		goto fail_create_file;
-
 	
 	return 0;
 	fail_create_file:
