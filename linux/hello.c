@@ -33,6 +33,7 @@
 #define MEMDEV_SIZE 4096
 #endif
 #//
+..
 
 /*mem设备描述结构体*/
 struct mem_dev{
