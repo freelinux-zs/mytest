@@ -52,6 +52,7 @@ static ktime_t ktime;
 static unsigned int interval=5000; /* unit: us */  
 struct timespec uptimeLast;
 static struct work_struct mem_work;
+static struct semaphore sem;
 
 #define TEST_IOCTL_BASE 99
 #define TEST_IOCTL_0    _IO(TEST_IOCTL_BASE,0)
@@ -177,9 +178,11 @@ static long mem_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 }
 
 static void mem_work_func(struct work_struct *work)
-{        
+{
+	down(&sem);	
 	hrtimer_start(&timer,
             ktime_set(2000 / 1000, (2000 % 1000) * 1000000),HRTIMER_MODE_REL);  //2S 超时 
+	up(&sem);
 }
 
 /*time function*/
@@ -281,6 +284,7 @@ static int __init memdev_init(void)
 	 
 	hrtimer_start(&timer, ktime, HRTIMER_MODE_REL);
 	INIT_WORK(&mem_work, mem_work_func);
+	sema_init(&sem, 1);
 	return 0;
 	fail_create_file:
 	cdev_del(&cdev);   /*注销设备*/
