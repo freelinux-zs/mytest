@@ -1,0 +1,10 @@
+obj-m := globalvar1.o
+
+KERNEL_DIR := /lib/modules/$(shell uname -r)/build
+PWD := $(shell pwd)
+
+all:
+	make -C $(KERNEL_DIR) SUBDIRS=$(PWD) modules
+clean:
+	rm -r *.o *.ko .*.cmd *.order *.symvers .tmp_versions/ *.mod.c
+
