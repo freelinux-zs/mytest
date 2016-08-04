@@ -1,0 +1,6 @@
+mymod程序说明：
+1.模块参数可以使用module_param()宏来生成。
+	module_param(参数名，参数类型，权限（permission）)
+	在例子模块总，sec定义为int类型的模块参数。
+	
+2.MODULE_PARM_DESC()宏来对模块参数进行说明。
