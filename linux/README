@@ -7,3 +7,7 @@
 
 2.错误信息：error: implicit declaration of function ‘do_posix_clock_monotonic_gettime’
 	暂时没找到解决办法，获取开启定时器的时间。通过log查看printk的时间点。
+
+
+
+3.git test //忽略此消息
