@@ -1,6 +1,7 @@
-#obj-m := hello.o
+obj-m := hello.o
 #obj-m := hrtimer.o
-obj-m := mymod.o
+#obj-m := mymod.o
+#obj-m := led.o
 
 KERNEL_DIR := /lib/modules/$(shell uname -r)/build
 PWD := $(shell pwd)
@@ -8,5 +9,6 @@ PWD := $(shell pwd)
 all:
 	make -C $(KERNEL_DIR) SUBDIRS=$(PWD) modules
 clean:
-	rm -r *.o *.ko .*.cmd *.order *.symvers .tmp_versions/ *.mod.c
+	make -C $(KERNEL_DIR) SUBDIRS=$(PWD) clean
+
 
