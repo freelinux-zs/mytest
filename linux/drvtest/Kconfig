@@ -1,0 +1,7 @@
+
+config DRVTEST_LINUX
+	bool " support drvtest"
+	default n
+	help
+	 Say Y
+
