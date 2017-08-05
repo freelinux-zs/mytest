@@ -144,7 +144,6 @@ static ssize_t __testdev_set_val(struct testdrv_linux_dev* dev, const char* buf,
 	
 	val = simple_strtol(buf, NULL, 10);
 
-	
 	if(down_interruptible(&(dev->sem))){
 		return -ERESTARTSYS;
 	}

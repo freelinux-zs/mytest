@@ -19,6 +19,6 @@ int main(){
 	int A = 0, B = 0, C = 0;
 	printf("Enter the two numbers to addn ");
 	scanf("%d %d",&A,&B);
-	printf("Required sum is %d\n",Add(A,B));
+	printf("Required sum is %d\n",add(A,B));
 	return 0;
 }
